@@ -1,19 +1,28 @@
-abstract class Persona {
+abstract class Persona<t> {
   abstract saludo():string
+  abstract getProps():t
 }
 
-class Adrian extends Persona {
+class Adrian extends Persona<string> {
   saludo() {
     return `hola?`
   }
+
+  getProps(){
+    return ``
+  }
 }
 
-class Ivan extends Persona {
-  constructor(private bro: Persona) {
+class Ivan extends Persona<number> {
+  constructor(private bro: Persona<any>) {
     super()
   }
   saludo() {
     return `hola bro`
+  }
+
+  getProps(){
+    return 123
   }
 
   despedida(){
@@ -21,20 +30,21 @@ class Ivan extends Persona {
   }
 }
 
-const b:Persona = new Adrian()
+const b = new Adrian()
 const c:Ivan = new Ivan(b);
 b.saludo()
 c.saludo()
 
 
 class ProfileEntity {
-  constructor(private user, private errors = {}){}
+  constructor(private user, private errors){}
 
   get username() {
     return this.user.username;
   }
 
   set username(username) {
+    delete this.errors.username;
     if(username.length < 2) {
       this.errors.username = "Mal nombre"
     }
